@@ -1,0 +1,52 @@
+{
+    "batch": {
+        "display_name": "Batch",
+        "position": 1,
+        "show": true,
+        "name": true,
+        "age": true
+    },
+    "gasflow": {
+        "display_name": "Gas Flow",
+        "position": 2,
+        "show": true,
+        "gas1": true,
+        "gas2": true,
+        "gas3": false,
+        "gas4": false,
+        "gas5": false
+    },
+    "pumps": {
+        "display_name": "Pumps",
+        "position": 3,
+        "show": true,
+        "dp01": true,
+        "dp02": true,
+        "dp03": true,
+        "dp04": true,
+        "dp05": false,
+        "dp06": false,
+        "dp07": false,
+        "dp08": false
+    },
+    "control": {
+        "display_name": "Control",
+        "position": 4,
+        "show": true,
+        "ph": true,
+        "temperature": true,
+        "do": true,
+        "agitation": true,
+        "antifoam": true
+    },
+    "softsensors": {
+        "display_name": "Softsensors",
+        "position": 5,
+        "show": true,
+        "ss1": true,
+        "ss2": true,
+        "ss3": true,
+        "ss4": true,
+        "ss5": true
+    }
+}
