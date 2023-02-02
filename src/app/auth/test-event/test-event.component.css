@@ -1,0 +1,9 @@
+.logo.angular:hover {
+    filter: drop-shadow(0 0 2em #e32727);
+}
+
+.center-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

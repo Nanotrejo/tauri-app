@@ -1,0 +1,12 @@
+<div>
+	<label>{{ system }} - {{dateNow | date:'M/d/yyyy, HH:mm:ss' }}</label>
+    <div class="ping-div">
+        <div class="ping" *ngFor="let p of ping">
+            <label
+			>{{ p.ip }} ({{p.count}})
+			<span class="status" *ngIf="p.status" [class.status-on]="p.status">ON</span>
+			<span class="status" *ngIf="!p.status" [class.status-off]="!p.status">OFF</span>
+		</label>
+	</div>
+</div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container">
+    <h1>Welcome to Tauri + Angular!</h1>
+
+    <div class="row">
+        <a href="https://tauri.app" target="_blank">
+            <img src="/assets/tauri.svg" class="logo tauri" alt="Tauri logo" />
+        </a>
+        <a href="https://angular.io" target="_blank">
+            <img src="/assets/angular.svg" class="logo angular" alt="Angular logo" />
+        </a>
+    </div>
+
+    <p>Click on the logos to learn more about the frameworks</p>
+
+    <div class="row">
+        <div>
+            <input id="greet-input" value="localhost" [(ngModel)]="greetingMessage" placeholder="Enter a IP..." />
+            <button type="button" (click)="ping(greetingMessage)">Ping 10 veces</button>
+            <!-- <button type="button" (click)="closePing(greetingMessage)">Ping Close</button> -->
+            <button type="button" (click)="readFile()">READ FILE</button>
+            <!-- <button type="button" (click)="writeBinaryFile()">WRITE FILE</button> -->
+            <!-- <button type="button" (click)="readBinayFile()">READ FILE to created file</button> -->
+            <button type="button" (click)="getRam()">GET RAM</button>
+            <button type="button" [routerLink]="['/login']">LOGIN</button>
+        </div>
+    </div>
+    <p >{{ message }}</p>
+</div>
+<div class="center-content">
+    <app-check-status [system]="systemLinux ? 'Linux' : 'Windows'" [ping]="pingArray"></app-check-status>
+</div>
