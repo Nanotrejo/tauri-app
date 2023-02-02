@@ -2,7 +2,7 @@ name: 'publish-event'
 on:
   push:
     branches:
-      - release
+      - main
 jobs:
   publish-tauri:
     strategy:
