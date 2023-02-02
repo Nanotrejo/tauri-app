@@ -55,7 +55,7 @@ export class TestEventComponent {
 		});
 		command.on("error", (error) => console.error(`command error: "${error}"`));
 		command.stdout.on("data", async (line) => {
-			if (line.includes("bytes from" || line.includes("tiempo") || line.includes("time"))) {
+			// if (line.includes("bytes from" || line.includes("tiempo") || line.includes("time"))) {
 				this.message = line;
 				console.log(
 					this.message,
@@ -66,7 +66,7 @@ export class TestEventComponent {
 				this.pingArray.find((p) => p.ip === ip && p.command === child)!.status = true;
 				this.pingArray.find((p) => p.ip === ip && p.command === child)!.count++;
 				console.warn(`PING: "${line}"`);
-			}
+			// }
 		});
 		command.stderr.on("data", (line) => console.error(`command stderr: "${line}"`));
 	}
