@@ -16,6 +16,7 @@ export class LoginScreenComponent implements OnInit {
   error = false;
   userCredentials = false;
   typePassword: string = 'password';
+  message: string = ''
 
   constructor(
       private fb: FormBuilder,
@@ -104,6 +105,7 @@ export class LoginScreenComponent implements OnInit {
                   this.router.navigate(['/test']);
               },
               (err: any) => {
+                this.message = err;
                   if (err.error_description == 'Invalid user credentials')
                       this.userCredentials = true;
                   this.firstLogIn = err.error_description === 'Account is not fully set up';

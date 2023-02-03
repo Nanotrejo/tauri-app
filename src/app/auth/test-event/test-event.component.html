@@ -13,18 +13,22 @@
     <p>Click on the logos to learn more about the frameworks</p>
 
     <div class="row">
-        <div>
+        <div style="display:flex; flex-wrap: wrap; justify-content:center; gap: 2rem;">
+            <button type="button" [routerLink]="['/login']">LOGIN</button>
             <input id="greet-input" value="localhost" [(ngModel)]="greetingMessage" placeholder="Enter a IP..." />
             <button type="button" (click)="ping(greetingMessage)">Ping 10 veces</button>
             <!-- <button type="button" (click)="closePing(greetingMessage)">Ping Close</button> -->
-            <button type="button" (click)="readFile()">READ FILE</button>
-            <!-- <button type="button" (click)="writeBinaryFile()">WRITE FILE</button> -->
-            <!-- <button type="button" (click)="readBinayFile()">READ FILE to created file</button> -->
             <button type="button" (click)="getRam()">GET RAM</button>
-            <button type="button" [routerLink]="['/login']">LOGIN</button>
+            <button type="button" (click)="readFile()">READ FILE TEMPLATE #1</button>
+            <button type="button" (click)="writeBinaryFile(1)">WRITE FILE (Document Folder) #2</button>
+            <button type="button" (click)="writeBinaryFile(2)">WRITE FILE (App Folder) #2</button>
+            <button type="button" (click)="readBinayFile(1)">READ FILE to created file (Document Folder) #3</button>
+            <button type="button" (click)="readBinayFile(2)">READ FILE to created file  (App Folder) #3</button>
+            <input *ngIf="fileData" style="width: 70%;" id="file-input" [(ngModel)]="fileData" placeholder="File Data.." />
         </div>
     </div>
     <p >{{ message }}</p>
+    <p >PATH -> {{ pathName }}</p>
 </div>
 <div class="center-content">
     <app-check-status [system]="systemLinux ? 'Linux' : 'Windows'" [ping]="pingArray"></app-check-status>

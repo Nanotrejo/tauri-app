@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Command } from "@tauri-apps/api/shell";
 import { readTextFile, BaseDirectory, writeTextFile, createDir } from "@tauri-apps/api/fs";
-import { resourceDir } from "@tauri-apps/api/path";
+import { appDir, documentDir, resourceDir } from "@tauri-apps/api/path";
 import templateJSON from "./template.json";
 import { type } from "@tauri-apps/api/os";
 
@@ -14,6 +14,8 @@ import { type } from "@tauri-apps/api/os";
 export class TestEventComponent {
 	greetingMessage = "localhost";
 	message = "";
+	pathName: string = "";
+	fileData: string = "";
 	commandPing: Command[] = [];
 	systemLinux: boolean = true;
 	pingArray: { ip: string; status: boolean; command: any; count: number }[] = [];
@@ -82,35 +84,45 @@ export class TestEventComponent {
 		const resourceDirPath = await resourceDir();
 		console.log(resourceDirPath);
 		// const contents = await readTextFile(
-		// 	// `${resourceDirPath.split("/tauri-app")[0]}/tauri-app/src/assets/template.json`,
+		// 	`${resourceDirPath.split("/tauri-app")[0]}/tauri-app/src/assets/template.json`,
 		// 	`template.json`,
 		// 	{ dir: BaseDirectory.App }
 		// );
 		const contents = JSON.stringify(templateJSON);
 		this.message = contents;
+		this.fileData = contents;
+		this.pathName ='./template.json (fichero en la raiz del proyecto)';
 		console.warn(JSON.parse(contents));
 	}
 
-	async writeBinaryFile() {
-		const path = await resourceDir();
+	async writeBinaryFile(type: number) {
+		if(!this.fileData) return;
+		const path = type === 1 ? await documentDir() : await appDir();
+		this.pathName = path;
 		const pathArray = path.split("/");
 		const tauriAppIndex = pathArray.indexOf("tauri-app");
 		const tauriAppPath = pathArray.slice(0, tauriAppIndex + 1).join("/");
-		// await writeTextFile(`${tauriAppPath}/src/assets/template-bin.json`, this.message);
-		await createDir(".rosita2.0", { dir: BaseDirectory.AppLocalData, recursive: true });
-		// await writeTextFile(`.rosita2.0/template-bin.json`, this.message, {dir: BaseDirectory.Document});
+		// await writeTextFile(`${tauriAppPath}/src/assets/template-bin.json`, this.fileData);
+		// await createDir(".rosita2.0", { dir: BaseDirectory.App, recursive: true });
+		type === 1 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.Document});
+		type === 2 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.App});
 		this.message = "data written";
+		
 	}
 
-	async readBinayFile() {
-		const path = await resourceDir();
+	async readBinayFile(type: number) {
+		const path = type === 1 ? await documentDir() : await appDir();
+		this.pathName = path;
 		const pathArray = path.split("/");
 		const tauriAppIndex = pathArray.indexOf("tauri-app");
 		const tauriAppPath = pathArray.slice(0, tauriAppIndex + 1).join("/");
 		// const data = await readTextFile(`${tauriAppPath}/src/assets/template-bin.json`);
-		const data = await readTextFile(`template-bin.json`, { dir: BaseDirectory.LocalData });
+		let data = ''
+		if(type === 1)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.Document });
+		if(type === 2)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.App });
 		console.warn(data);
 		this.message = data;
+		this.fileData = data;
 	}
 
 	async getRam() {
@@ -121,11 +133,13 @@ export class TestEventComponent {
 		// 	console.warn(`OUT "${line}"`);
 		// 	this.message = line;
 		// });
+		
 		const command = this.systemLinux
 			? new Command("ram-linux", ["-m"])
-			: new Command("ram-windows");
+			: new Command("ram-windows", ["get", "FreePhysicalMemory"]);
 
 		const child = await command.spawn();
+		this.message = "Ram: 0 / 0 GB";
 		console.log("ram pid:", child);
 		command.on("close", (data) => {
 			console.debug(`command finished with code ${data.code} and signal ${data.signal}`, data);
@@ -138,6 +152,8 @@ export class TestEventComponent {
 				this.message = this.systemLinux
 					? "Ram: " + (ramTotal - ramFree).toFixed(2) + " / " + ramTotal + " GB"
 					: "Ram: " + (Number(line) / 1024 / 1024).toFixed(2) + " GB";
+			} else if (!this.systemLinux){
+				this.message = line;
 			}
 		});
 		command.stderr.on("data", (line) => console.error(`command stderr: "${line}"`));

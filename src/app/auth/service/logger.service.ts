@@ -51,6 +51,6 @@ export class LoggerService implements HttpInterceptor {
     handleError(error: HttpErrorResponse) {
       
       console.error("ERROR HANDLER: ", error);
-      return throwError(error?.message);
+      return throwError(JSON.stringify(error));
   }
 }
