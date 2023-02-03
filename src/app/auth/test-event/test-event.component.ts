@@ -123,7 +123,7 @@ export class TestEventComponent {
 		// });
 		const command = this.systemLinux
 			? new Command("ram-linux", ["-m"])
-			: new Command("ram-windows", ["OS", "get", "FreePhysicalMemory"]);
+			: new Command("ram-windows");
 
 		const child = await command.spawn();
 		console.log("ram pid:", child);

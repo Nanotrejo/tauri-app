@@ -36,8 +36,8 @@
 					},
 					{
 						"name": "ram-windows",
-						"cmd": "wmic",
-						"args": ["OS", "get" ,"FreePhysicalMemory"]
+						"cmd": "wmic OS get FreePhysicalMemory",
+						"args": []
 					}
 				]
 			},
