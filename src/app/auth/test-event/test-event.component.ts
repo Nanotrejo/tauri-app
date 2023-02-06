@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Command } from "@tauri-apps/api/shell";
 import { readTextFile, BaseDirectory, writeTextFile, createDir } from "@tauri-apps/api/fs";
-import { appDir, documentDir, resourceDir } from "@tauri-apps/api/path";
+import { appDataDir, appDir, documentDir, resourceDir, runtimeDir } from "@tauri-apps/api/path";
 import templateJSON from "./template.json";
 import { type } from "@tauri-apps/api/os";
 
@@ -97,21 +97,22 @@ export class TestEventComponent {
 
 	async writeBinaryFile(type: number) {
 		if(!this.fileData) return;
-		const path = type === 1 ? await documentDir() : await appDir();
+		const path = type === 1 ? await documentDir() : await runtimeDir();
 		this.pathName = path;
 		const pathArray = path.split("/");
 		const tauriAppIndex = pathArray.indexOf("tauri-app");
 		const tauriAppPath = pathArray.slice(0, tauriAppIndex + 1).join("/");
 		// await writeTextFile(`${tauriAppPath}/src/assets/template-bin.json`, this.fileData);
-		// await createDir(".rosita2.0", { dir: BaseDirectory.App, recursive: true });
+		type === 1 && await createDir("rosita2.0", { dir: BaseDirectory.Document, recursive: true });
 		type === 1 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.Document});
-		type === 2 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.App});
+		type === 2 && await createDir("rosita2.0", { dir: BaseDirectory.Runtime, recursive: true });
+		type === 2 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.Runtime});
 		this.message = "data written";
 		
 	}
 
 	async readBinayFile(type: number) {
-		const path = type === 1 ? await documentDir() : await appDir();
+		const path = type === 1 ? await documentDir() : await runtimeDir();
 		this.pathName = path;
 		const pathArray = path.split("/");
 		const tauriAppIndex = pathArray.indexOf("tauri-app");
@@ -119,7 +120,7 @@ export class TestEventComponent {
 		// const data = await readTextFile(`${tauriAppPath}/src/assets/template-bin.json`);
 		let data = ''
 		if(type === 1)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.Document });
-		if(type === 2)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.App });
+		if(type === 2)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.Runtime });
 		console.warn(data);
 		this.message = data;
 		this.fileData = data;
