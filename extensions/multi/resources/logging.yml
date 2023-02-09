@@ -1,0 +1,25 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s %(levelname)s [%(correlation_id)s] %(message)s'
+filters:
+  correlation_id: { '()': correlation_id_filter(uuid_length=32) }
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+    filters: [ correlation_id ]
+  file:
+    level: DEBUG
+    formatter: simple
+    class: logging.handlers.RotatingFileHandler
+    filename: 'extensions/multi/multi.log'
+    mode: a
+    maxBytes: 10000000
+    backupCount: 3
+    filters: [ correlation_id ]
+root:
+  level: DEBUG
+  handlers: [ console, file ]

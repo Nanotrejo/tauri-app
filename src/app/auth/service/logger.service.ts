@@ -6,8 +6,7 @@ import {
     HttpEvent,
     HttpErrorResponse,
 } from '@angular/common/http';
-import { catchError, Observable, of, throwError } from 'rxjs';
-
+import { catchError, Observable, throwError } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
@@ -27,13 +26,23 @@ export class LoggerService implements HttpInterceptor {
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         let newHeaders = req.headers;
-        newHeaders = newHeaders.delete('serial number');
+        // newHeaders = newHeaders.delete('serial number');
+        // newHeaders = newHeaders.append('rejectUnauthorized', 'false');
+        // newHeaders = newHeaders.append('withCredentials', 'false');
+        // newHeaders = newHeaders.append('access-control-allow-credentials', 'true');
+        // newHeaders = newHeaders.append("Access-Control-Allow-Headers", "*");
+        // newHeaders = newHeaders.append("Access-Control-Allow-Methods", "*");
+        // newHeaders = newHeaders.append("Access-Control-Allow-Origin", "*");
+        // newHeaders = newHeaders.append("Control-Allow-Origin", "*");
+        // newHeaders = newHeaders.append("www-authenticate", "Bearer");
 
+          console.log(req)
+          console.log(newHeaders)
         this.url = req.url;
         this.group = '';
         localStorage.setItem('url', this.url);
 
-        const bcu_url = 'https://rosita.bionet.local';
+        const bcu_url = 'https://127001.bionet.local';
 
         const xhr = req.clone({
             headers: newHeaders,

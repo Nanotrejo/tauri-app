@@ -24,6 +24,8 @@
             <button type="button" (click)="writeBinaryFile(2)">WRITE FILE (App Folder) #2</button>
             <button type="button" (click)="readBinayFile(1)">READ FILE to created file (Document Folder) #3</button>
             <button type="button" (click)="readBinayFile(2)">READ FILE to created file  (App Folder) #3</button>
+            <button type="button" (click)="getBcus()">Get BCUs</button>
+            <button type="button" (click)="udp_send_rust()">Get RUST</button>
             <input *ngIf="fileData" style="width: 70%;" id="file-input" [(ngModel)]="fileData" placeholder="File Data.." />
         </div>
     </div>

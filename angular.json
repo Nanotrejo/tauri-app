@@ -15,7 +15,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["http", "https", "zlib", "node"],
+            "allowedCommonJsDependencies": ["http", "https", "zlib", "node", "fs"],
             "outputPath": "dist/",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -61,6 +61,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "browserTarget": "tauri-app:build:production"

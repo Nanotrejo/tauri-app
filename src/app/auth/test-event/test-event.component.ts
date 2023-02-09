@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { invoke } from "@tauri-apps/api/tauri";
 import { Command } from "@tauri-apps/api/shell";
 import { readTextFile, BaseDirectory, writeTextFile, createDir } from "@tauri-apps/api/fs";
-import { appDataDir, appDir, documentDir, resourceDir, runtimeDir } from "@tauri-apps/api/path";
+import { appDataDir, documentDir, localDataDir, resourceDir, runtimeDir } from "@tauri-apps/api/path";
 import templateJSON from "./template.json";
 import { type } from "@tauri-apps/api/os";
 
@@ -97,7 +97,7 @@ export class TestEventComponent {
 
 	async writeBinaryFile(type: number) {
 		if(!this.fileData) return;
-		const path = type === 1 ? await documentDir() : await runtimeDir();
+		const path = type === 1 ? await documentDir() : await localDataDir();
 		this.pathName = path;
 		const pathArray = path.split("/");
 		const tauriAppIndex = pathArray.indexOf("tauri-app");
@@ -105,14 +105,14 @@ export class TestEventComponent {
 		// await writeTextFile(`${tauriAppPath}/src/assets/template-bin.json`, this.fileData);
 		type === 1 && await createDir("rosita2.0", { dir: BaseDirectory.Document, recursive: true });
 		type === 1 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.Document});
-		type === 2 && await createDir("rosita2.0", { dir: BaseDirectory.Runtime, recursive: true });
-		type === 2 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.Runtime});
+		type === 2 && await createDir("rosita2.0", { dir: BaseDirectory.LocalData, recursive: true });
+		type === 2 && await writeTextFile(`rosita2.0/template-bin.json`, this.fileData, {dir: BaseDirectory.LocalData});
 		this.message = "data written";
 		
 	}
 
 	async readBinayFile(type: number) {
-		const path = type === 1 ? await documentDir() : await runtimeDir();
+		const path = type === 1 ? await documentDir() : await appDataDir();
 		this.pathName = path;
 		const pathArray = path.split("/");
 		const tauriAppIndex = pathArray.indexOf("tauri-app");
@@ -120,7 +120,7 @@ export class TestEventComponent {
 		// const data = await readTextFile(`${tauriAppPath}/src/assets/template-bin.json`);
 		let data = ''
 		if(type === 1)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.Document });
-		if(type === 2)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.Runtime });
+		if(type === 2)  data = await readTextFile(`rosita2.0/template-bin.json`, { dir: BaseDirectory.AppData });
 		console.warn(data);
 		this.message = data;
 		this.fileData = data;
@@ -158,5 +158,30 @@ export class TestEventComponent {
 			}
 		});
 		command.stderr.on("data", (line) => console.error(`command stderr: "${line}"`));
+	}
+
+	async getBcus(){
+		const command = new Command("udp-send", ["python", "/home/david/bionet/test/tauri-app/extensions/spawnedProcess/discovery/udp-send.py"]);
+
+		const child = await command.spawn();
+		this.message = "BCUS";
+		command.on("close", (data) => {
+			console.debug(`command finished with code ${data.code} and signal ${data.signal}`, data);
+		});
+		command.on("error", (error) => console.error(`command error: "${error}"`));
+		command.stdout.on("data", (line) => {
+			this.message += line;
+		});
+		command.stderr.on("data", (line) => console.error(`command stderr: "${line}"`));
+	}
+
+	udp_send_rust(){
+		invoke('udp_send').then((message: Array<string> | any) => {
+			// convert message to string
+			console.log(message);
+			const messageString = message;
+			// display message
+			this.message = messageString;
+		});
 	}
 }

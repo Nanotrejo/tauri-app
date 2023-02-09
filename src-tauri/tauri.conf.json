@@ -4,7 +4,7 @@
 		"beforeBuildCommand": "npm run build",
 		"devPath": "http://localhost:4200",
 		"distDir": "../dist",
-		"withGlobalTauri": false
+		"withGlobalTauri": true
 	},
 	"package": {
 		"productName": "tauri-app",
@@ -38,21 +38,19 @@
 						"name": "ram-windows",
 						"cmd": "wmic OS",
 						"args": ["get", "FreePhysicalMemory"]
+					},
+					{
+						"name": "udp-send",
+						"cmd": "python",
+						"args": ["/home/david/bionet/test/tauri-app/extensions/spawnedProcess/discovery/udp-send.py"]
 					}
 				]
 			},
 			"fs": {
 				"all": true,
-				"readFile": true,
-				"writeFile": true,
-				"readDir": true,
-				"copyFile": true,
-				"createDir": true,
-				"removeDir": true,
-				"removeFile": true,
-				"renameFile": true,
-				"exists": true,
-				"scope": ["**"]
+				"scope": [
+					"**"
+				]
 			}
 		},
 		"bundle": {

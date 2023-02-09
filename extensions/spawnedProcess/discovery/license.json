@@ -1,0 +1,35 @@
+{
+  "license": "ASRFASFEFASGAEFGASFEAWEFAGASFGA",
+  "devices" : [
+  {
+    "sn": "F0001",
+    "type": "F0",
+    "mac": "C0-3E-BA-02-C5-31"
+  },
+  {
+    "sn": "F0002",
+    "type": "F0",
+    "mac": "C0-3E-BA-02-C5-32"
+  },
+  {
+    "sn": "F0003",
+    "type": "F0",
+    "mac": "C0-3E-BA-02-C5-33"
+  },
+  {
+    "sn": "F0004",
+    "type": "F0",
+    "mac": "C0-3E-BA-02-C5-34"
+  },
+  {
+    "sn": "F1005",
+    "type": "F1",
+    "mac": "C0-3E-BA-02-C5-35"
+  },
+  {
+    "sn": "F1006",
+    "type": "F1",
+    "mac": "C0-3E-BA-02-C5-36"
+  }
+  ]
+}
