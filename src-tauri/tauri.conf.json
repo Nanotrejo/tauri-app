@@ -53,6 +53,11 @@
 				"renameFile": true,
 				"exists": true,
 				"scope": ["**"]
+			},
+			"http": {
+				"all": true,
+				"request": true,
+				"scope": ["https://**"]
 			}
 		},
 		"bundle": {

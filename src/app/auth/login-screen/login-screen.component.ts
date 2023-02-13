@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -97,21 +98,27 @@ export class LoginScreenComponent implements OnInit {
               this.logInForm.value['password'],
           )
           .subscribe(
-              async (result: any) => {
-                  if (!result.access_token) {
-                     
-                      return;
-                  }
-                  this.router.navigate(['/test']);
-              },
-              (err: any) => {
+            {
+            next: (result: any) => {
+                console.warn(result);
+                if (!result) {
+                    return;
+                }
+                this.router.navigate(['/test']);
+            },
+            error: (err) => {
+                console.warn(err);
                 this.message = err;
                   if (err.error_description == 'Invalid user credentials')
                       this.userCredentials = true;
                   this.firstLogIn = err.error_description === 'Account is not fully set up';
                   if (err.error_description === 'Account is not fully set up') return;
-              },
-          );
+            },
+            complete: () => {
+                console.info('complete');
+            }
+            
+          });
   }
 
 }
