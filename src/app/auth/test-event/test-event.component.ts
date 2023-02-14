@@ -5,6 +5,7 @@ import { readTextFile, BaseDirectory, writeTextFile, createDir } from "@tauri-ap
 import { appDataDir, appDir, documentDir, resourceDir, runtimeDir } from "@tauri-apps/api/path";
 import templateJSON from "./template.json";
 import { type } from "@tauri-apps/api/os";
+import { ProfileService, SoftSensorsService } from "src/swagger/motor";
 
 @Component({
 	selector: "app-test-event",
@@ -20,7 +21,7 @@ export class TestEventComponent {
 	systemLinux: boolean = true;
 	pingArray: { ip: string; status: boolean; command: any; count: number }[] = [];
 
-	constructor() {
+	constructor(private softsensorServiceSwagger: SoftSensorsService, private profileServiceSwagger: ProfileService) {
 		this.getTypeSystem(); // this.systemLinux = window.navigator.userAgent.toLowerCase().includes("windows") ? false : true;
 	}
 
@@ -158,5 +159,52 @@ export class TestEventComponent {
 			}
 		});
 		command.stderr.on("data", (line) => console.error(`command stderr: "${line}"`));
+	}
+
+	createSoftsensor(){
+		this.softsensorServiceSwagger.createSoftsensorSoftsensorPost({
+			"name": "string",
+			"units": "string",
+			"script_function": "result = temp_pv + 2",
+			"sampling_time": 10,
+			"description": "string",
+			"variables": [
+			  "temp_pv"
+			]
+		  }).subscribe((data) => {
+			this.message = JSON.stringify(data);
+		  })
+	}
+	updateSoftsensor(){
+		this.softsensorServiceSwagger.updateSoftsensorSoftsensorSoftsensorNameIdPut("1", {
+			"name": "update",
+			"units": "update",
+			"script_function": "result = temp_pv + 2",
+			"sampling_time": 10,
+			"description": "update",
+			"variables": [
+			  "temp_pv"
+			]
+		  }).subscribe((data) => {
+			this.message = JSON.stringify(data);
+		  }
+		)
+	}
+	deleteSoftsensor(){
+		this.softsensorServiceSwagger.deleteSoftsensorSoftsensorSoftsensorNameIdDelete("1").subscribe((data) => {
+			this.message = JSON.stringify(data);
+		  }
+		)
+	}
+
+	startProfileTemperature(){
+		this.profileServiceSwagger.startProfileProfileProfileNameStartPatch('temperature_profile').subscribe((data) => {
+			this.message = JSON.stringify(data);
+		})
+	}
+	stopProfileTemperature(){
+		this.profileServiceSwagger.stopProfileProfileProfileNameStopPatch('temperature_profile').subscribe((data) => {
+			this.message = JSON.stringify(data);
+		})
 	}
 }

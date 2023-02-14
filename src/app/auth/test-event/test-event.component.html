@@ -24,6 +24,11 @@
             <button type="button" (click)="writeBinaryFile(2)">WRITE FILE (App Folder) #2</button>
             <button type="button" (click)="readBinayFile(1)">READ FILE to created file (Document Folder) #3</button>
             <button type="button" (click)="readBinayFile(2)">READ FILE to created file  (App Folder) #3</button>
+            <button type="button" (click)="createSoftsensor()">Create Softsensor</button>
+            <button type="button" (click)="updateSoftsensor()">Update Softsensor</button>
+            <button type="button" (click)="deleteSoftsensor()">Delete Softsensor</button>
+            <button type="button" (click)="startProfileTemperature()">Start Temperature</button>
+            <button type="button" (click)="stopProfileTemperature()">Stop Temperature</button>
             <input *ngIf="fileData" style="width: 70%;" id="file-input" [(ngModel)]="fileData" placeholder="File Data.." />
         </div>
     </div>

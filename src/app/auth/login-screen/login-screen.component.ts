@@ -26,9 +26,9 @@ export class LoginScreenComponent implements OnInit {
       private authServiceSwagger: AuthFlowService,
   ) {
       this.logInForm = this.fb.group({
-          username: ['', [Validators.required]],
+          username: ['admin', [Validators.required]],
           password: [
-              '',
+              'admin',
               Validators.compose([Validators.required]),
           ],
           newPassword: [
